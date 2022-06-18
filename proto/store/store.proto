@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package store;
+
+service Store {
+  rpc GetProductPrice (GetProductPriceRequest) returns (GetProductPriceResponse) {}
+  rpc SellProduct (SellProductRequest) returns (SellProductResponse) {}
+  rpc KillServer (KillServerRequest) returns (KillServerResponse) {}
+}
+
+message GetProductPriceRequest {}
+
+message GetProductPriceResponse {
+  uint32 price = 1;
+}
+
+message SellProductRequest {
+  OrderToken orderId = 1;
+}
+
+message SellProductResponse {
+  int32 price = 1;
+}
+
+message KillServerRequest {}
+
+message KillServerResponse {
+  int32 storeBalance = 1;
+}
+
+message OrderToken {
+  repeated int8 token = 1;
+}

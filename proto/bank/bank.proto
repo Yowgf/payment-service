@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package bank;
+
+service Bank {
+  rpc GetBalance (GetBalanceRequest) returns (GetBalanceResponse) {}
+  rpc Pay (PayRequest) returns (PayResponse) {}
+  rpc Transfer (TransferRequest) returns (TransferResponse) {}
+  rpc KillServer (KillServerRequest) returns (KillServerResponse) {}
+}
+
+message GetBalanceRequest {
+  string walletId = 1;
+}
+
+message GetBalanceResponse {
+  int32 balance = 1;
+}
+
+message PayRequest {
+  string walletId = 1;
+  uint32 amount = 2;
+}
+
+message PayResponse {
+  OrderToken orderId = 1;
+  int32 status = 2;
+}
+
+message TransferRequest {
+  string targetWalletId = 1;
+  OrderToken orderId = 2;
+  uint32 amount = 3;
+}
+
+message TransferResponse {
+  int32 status = 1;
+}
+
+message KillServerRequest {}
+
+message KillServerResponse {
+  uint32 numAccounts = 1;
+}
+
+message OrderToken {
+  repeated int8 token = 1;
+}
