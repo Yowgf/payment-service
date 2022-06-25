@@ -24,8 +24,9 @@ class StoreServer:
         logger.info("Initializing Store server")
 
         # Register grpc service
-        service = StoreService()
-        self._srv = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=10))
+        service = StoreService(self._product_price, self._walletid,
+                               self._bank_endpoint)
+        self._srv = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=4))
         store_pb2_grpc.add_StoreServicer_to_server(service,
                                                 self._srv)
         self._srv.add_insecure_port("[::]:{}".format(self._port))

@@ -75,9 +75,13 @@ class BankService:
         target_wallet = self._find_wallet(target_walletid)
         if target_wallet == None:
             status = -1
+            logger.info("Target wallet '{}' not found".format(target_walletid))
         elif orderid not in self._orders:
             status = -2
+            logger.info("Order '{}' not found".format(orderid))
         elif amount != self._orders[orderid].amount:
+            logger.info("Invalid amount {}. Right amount would be {}".format(
+                amount, self._orderes[orderid].amount))
             status = -3
 
         if status >= 0:
@@ -93,8 +97,7 @@ class BankService:
         return resp
 
     def KillServer(self, request, context):
-        # TODO: return right number of accounts
-        return bank_pb2.KillServerResponse(numAccounts=0)
+        return bank_pb2.KillServerResponse(numAccounts=len(self._wallets))
 
     def _find_wallet(self, walletid):
         if walletid in self._wallets:

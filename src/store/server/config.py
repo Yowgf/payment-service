@@ -10,8 +10,8 @@ def parse_config(args):
     if len(args) < min_args:
         raise ValueError(f"Need at least {min_args} arguments for the program")
 
-    product_price = args[0]
-    port = args[1]
+    product_price = int(args[0])
+    port = int(args[1])
     walletid = args[2]
     bank_endpoint = args[3]
 
