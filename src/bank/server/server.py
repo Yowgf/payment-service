@@ -7,6 +7,7 @@ import bank_pb2
 import bank_pb2_grpc
 from common import log
 from .defs import LOGGER_NAME
+from .service import BankService
 
 logger = log.logger(LOGGER_NAME)
 
@@ -20,14 +21,10 @@ class BankServer:
     def init(self):
         logger.info("Initializing Bank server")
 
-        self._srv = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=10))
-        self._srv.GetBalance = self._GetBalance
-        self._srv.Pay = self._Pay
-        self._srv.Transfer = self._Transfer
-        self._srv.KillServer = self._KillServer
-
         # Register grpc service
-        bank_pb2_grpc.add_BankServicer_to_server(bank_pb2_grpc.BankServicer(),
+        service = BankService(self._wallets_file)
+        self._srv = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=10))
+        bank_pb2_grpc.add_BankServicer_to_server(service,
                                                 self._srv)
         self._srv.add_insecure_port("[::]:{}".format(self._port))
 
@@ -41,15 +38,3 @@ class BankServer:
             time.sleep(5)
 
         logger.info("Terminating Bank server.")
-
-    def _GetBalance(self, request, context):
-        print("Got wallet id: {}".format(request.walletId))
-
-    def _Pay(self, request, context):
-        pass
-
-    def _Transfer(self, request, context):
-        pass
-
-    def _KillServer(self, request, context):
-        pass
