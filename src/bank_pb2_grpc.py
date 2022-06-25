@@ -41,29 +41,32 @@ class BankServicer(object):
   pass
 
   def GetBalance(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
+    """GetBalance returns the balance of a wallet.
+    """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def Pay(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
+    """Pay transfers some amount of assets from client wallet to destination
+    wallet.
+    """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def Transfer(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
+    """Transfer transfers some amount of assets from client wallet to destination
+    wallet.
+    """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def KillServer(self, request, context):
-    # missing associated documentation comment in .proto file
-    pass
+    """KillServer tells the server to suicide. This exists to facilitate testing,
+    and because this project is just a proof of concept.
+    """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')

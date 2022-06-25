@@ -93,6 +93,7 @@ class BankService:
         return resp
 
     def KillServer(self, request, context):
+        # TODO: return right number of accounts
         return bank_pb2.KillServerResponse(numAccounts=0)
 
     def _find_wallet(self, walletid):

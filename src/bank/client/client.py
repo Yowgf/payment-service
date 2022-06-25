@@ -1,23 +1,19 @@
-import sys
-
 import grpc
-
-from common import log
-from .config import Config
-from .defs import LOGGER_NAME
-from .request import Request
 
 import bank_pb2
 import bank_pb2_grpc
+from common import log
+from .defs import LOGGER_NAME
+from .request import Request
 
 logger = log.logger(LOGGER_NAME)
 
 class BankClient:
     def __init__(self, config):
         self._walletid = config.walletid
-        self._server_location = config.server_location
+        self._bank_endpoint = config.bank_endpoint
         logger.info(f"Received config: walletid={self._walletid} "+
-                    f"server_location={self._server_location}")
+                    f"bank_endpoint={self._bank_endpoint}")
 
         self._orders = {}
         # This order alias is used locally by the client to keep track of
@@ -29,7 +25,7 @@ class BankClient:
 
     def run(self):
         instr = ""
-        channel = grpc.insecure_channel(self._server_location)
+        channel = grpc.insecure_channel(self._bank_endpoint)
         stub = bank_pb2_grpc.BankStub(channel)
         while True:
             request_str = input()

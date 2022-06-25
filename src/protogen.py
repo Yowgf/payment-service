@@ -7,7 +7,8 @@ from grpc_tools import protoc
 
 from common import log
 
-logger = log.logger('protogen', logging.INFO)
+logger = log.logger('protogen')
+log.parse_config_log_level(sys.argv[1:])
 
 proto_path = "src"
 proto_files = glob.glob(proto_path + "/*.proto")
