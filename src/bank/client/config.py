@@ -1,8 +1,8 @@
 from common import log
 
 class Config:
-    def __init__(self, wallet_id, server_location):
-        self.wallet_id = wallet_id
+    def __init__(self, walletid, server_location):
+        self.walletid = walletid
         self.server_location = server_location
 
 def parse_config(args):
@@ -10,7 +10,7 @@ def parse_config(args):
     if len(args) < min_args:
         raise ValueError(f"Need at least {min_args} arguments for the program")
 
-    wallet_id = args[0]
+    walletid = args[0]
     server_location = args[1]
 
-    return Config(wallet_id, server_location)
+    return Config(walletid, server_location)
