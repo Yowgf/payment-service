@@ -34,7 +34,7 @@ def stream_handler():
     h.setFormatter(FORMATTER)
     return h
 
-def logger(logger_name):
+def logger(logger_name, log_level=None):
     global all_loggers_map
 
     if all_loggers_map.get(logger_name):
@@ -44,7 +44,10 @@ def logger(logger_name):
         for h in logger.handlers:
             logger.removeHandler(h)
         logger.propagate = False
-        logger.setLevel(LOGGING_LEVEL)
+        if log_level == None:
+            logger.setLevel(LOGGING_LEVEL)
+        else:
+            logger.setLevel(log_level)
         logger.addHandler(stream_handler())
 
         all_loggers_map[logger_name] = logger

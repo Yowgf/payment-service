@@ -1,11 +1,18 @@
 syntax = "proto3";
 
-package bank;
+package proto.bank;
 
 service Bank {
+  // GetBalance returns the balance of a wallet.
   rpc GetBalance (GetBalanceRequest) returns (GetBalanceResponse) {}
+  // Pay transfers some amount of assets from client wallet to destination
+  // wallet.
   rpc Pay (PayRequest) returns (PayResponse) {}
+  // Transfer transfers some amount of assets from client wallet to destination
+  // wallet.
   rpc Transfer (TransferRequest) returns (TransferResponse) {}
+  // KillServer tells the server to suicide. This exists to facilitate testing,
+  // and because this project is just a proof of concept.
   rpc KillServer (KillServerRequest) returns (KillServerResponse) {}
 }
 
@@ -23,13 +30,13 @@ message PayRequest {
 }
 
 message PayResponse {
-  OrderToken orderId = 1;
+  bytes orderId = 1;
   int32 status = 2;
 }
 
 message TransferRequest {
   string targetWalletId = 1;
-  OrderToken orderId = 2;
+  bytes orderId = 2;
   uint32 amount = 3;
 }
 
@@ -41,8 +48,4 @@ message KillServerRequest {}
 
 message KillServerResponse {
   uint32 numAccounts = 1;
-}
-
-message OrderToken {
-  repeated int8 token = 1;
 }

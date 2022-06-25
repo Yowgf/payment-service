@@ -6,11 +6,9 @@ class Config:
         self.server_location = server_location
 
 def parse_config(args):
-    log.parse_config_log_level(args)
-
     min_args = 2
     if len(args) < min_args:
-        raise ValueError("Need at least {min_args} arguments for the program")
+        raise ValueError(f"Need at least {min_args} arguments for the program")
 
     wallet_id = args[0]
     server_location = args[1]
