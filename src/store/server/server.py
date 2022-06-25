@@ -1,5 +1,5 @@
 import concurrent.futures
-import time
+import threading
 
 import grpc
 
@@ -18,14 +18,14 @@ class StoreServer:
         self._walletid = config.walletid
         self._bank_endpoint = config.bank_endpoint
 
-        self._stop = False
+        self._stop_event = threading.Event()
 
     def init(self):
         logger.info("Initializing Store server")
 
         # Register grpc service
         service = StoreService(self._product_price, self._walletid,
-                               self._bank_endpoint)
+                               self._bank_endpoint, self._stop_event)
         self._srv = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=4))
         store_pb2_grpc.add_StoreServicer_to_server(service,
                                                 self._srv)
@@ -37,7 +37,6 @@ class StoreServer:
         logger.info("Starting Store server.")
 
         self._srv.start()
-        while not self._stop:
-            time.sleep(5)
+        self._stop_event.wait()
 
         logger.info("Terminating Store server.")

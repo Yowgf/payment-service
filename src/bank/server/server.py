@@ -1,5 +1,5 @@
 import concurrent.futures
-import time
+import threading
 
 import grpc
 
@@ -16,13 +16,13 @@ class BankServer:
         self._port = config.port
         self._wallets_file = config.wallets_file
 
-        self._stop = False
+        self._stop_event = threading.Event()
 
     def init(self):
         logger.info("Initializing Bank server")
 
         # Register grpc service
-        service = BankService(self._wallets_file)
+        service = BankService(self._wallets_file, self._stop_event)
         self._srv = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=10))
         bank_pb2_grpc.add_BankServicer_to_server(service,
                                                 self._srv)
@@ -34,7 +34,6 @@ class BankServer:
         logger.info("Starting Bank server.")
 
         self._srv.start()
-        while not self._stop:
-            time.sleep(5)
+        self._stop_event.wait()
 
         logger.info("Terminating Bank server.")

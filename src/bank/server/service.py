@@ -12,7 +12,9 @@ logger = log.logger(LOGGER_NAME)
 class BankService:
     _orderid_size = 32
 
-    def __init__(self, wallets_file):
+    def __init__(self, wallets_file, stop_event):
+        self._stop_event = stop_event
+
         wfile_lines = open(wallets_file).read().strip().split("\n")
         wfile_entries = [line.split(" ") for line in wfile_lines]
         logger.debug("Wallet file entries: {}".format(wfile_entries))
@@ -97,7 +99,14 @@ class BankService:
         return resp
 
     def KillServer(self, request, context):
-        return bank_pb2.KillServerResponse(numAccounts=len(self._wallets))
+        logger.debug("Received KillServer request: {}".format(request))
+
+        self._stop_event.set()
+        resp = bank_pb2.KillServerResponse(numAccounts=len(self._wallets))
+
+        logger.debug("Successful KillServer request. resp: {}".format(resp))
+
+        return resp
 
     def _find_wallet(self, walletid):
         if walletid in self._wallets:
