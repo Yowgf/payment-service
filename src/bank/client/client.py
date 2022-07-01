@@ -65,10 +65,14 @@ class BankClient:
 
     def _process_request(self, stub, walletid, request):
         if request.type == Request.GET_BALANCE:
+            logger.debug("Processing GET_BALANCE")
+
             req = bank_pb2.GetBalanceRequest(walletId=walletid)
             resp = stub.GetBalance(req)
             print(resp.balance)
         elif request.type == Request.PAY:
+            logger.debug("Processing PAY request")
+
             req = bank_pb2.PayRequest(walletId=walletid, amount=request.args[0])
             resp = stub.Pay(req)
             status = resp.status
@@ -78,7 +82,10 @@ class BankClient:
                 self._orders[self._order_alias] = resp.orderId
                 print("{}".format(self._order_alias))
                 self._order_alias += 1
+
         elif request.type == Request.TRANSFER:
+            logger.debug("Processing TRANSFER request")
+
             order_alias = int(request.args[1])
             logger.debug("Order alias for transfer request: {}".format(order_alias))
             if order_alias not in self._orders:
@@ -91,7 +98,10 @@ class BankClient:
                                                targetWalletId=request.args[2])
                 resp = stub.Transfer(req)
                 print("{}".format(resp.status))
+
         elif request.type == Request.KILL_SERVER:
+            logger.debug("Processing KILL_SERVER request")
+
             req = bank_pb2.KillServerRequest()
             resp = stub.KillServer(req)
             print("{}".format(resp.numAccounts))

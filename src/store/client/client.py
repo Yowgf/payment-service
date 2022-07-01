@@ -41,16 +41,16 @@ class StoreClient:
         args = []
 
         # P
-        if request_type == Request.GET_PRODUCT_PRICE:
+        if request_type.startswith(Request.GET_PRODUCT_PRICE):
             assert len(split_by_space) == 1
         # C
-        elif request_type == Request.SELL_PRODUCT:
+        elif request_type.startswith(Request.SELL_PRODUCT):
             assert len(split_by_space) == 1
         # T
-        elif request_type == Request.KILL_SERVER:
+        elif request_type.startswith(Request.KILL_SERVER):
             assert len(split_by_space) == 1
         else:
-            raise ValueError(f"Invalid request type '{request_str}'")
+            raise ValueError(f"Invalid request type '{request_type}'")
 
         return Request(request_type, args)
 
