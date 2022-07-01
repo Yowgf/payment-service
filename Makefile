@@ -11,7 +11,10 @@ arg4 ?=
 clean:
 
 stubs:
+ifndef STUBS_DONE
 	python3 src/protogen.py $(LOG_LEVEL_ARG)
+endif
+	$(eval STUBS_DONE := true)
 
 run_serv_banco: stubs
 	python3 src/bank_server_main.py $(arg1) $(arg2) $(LOG_LEVEL_ARG)

@@ -59,6 +59,7 @@ class BankService:
             orderid = ('-'*self._orderid_size).encode()
         else:
             orderid = secrets.token_bytes(self._orderid_size)
+            self._wallets[walletid].balance -= amount
             self._orders[orderid] = Order(orderid, wallet, amount)
 
         resp = bank_pb2.PayResponse(orderId=orderid, status=status)
@@ -83,7 +84,7 @@ class BankService:
             logger.info("Order '{}' not found".format(orderid))
         elif amount != self._orders[orderid].amount:
             logger.info("Invalid amount {}. Right amount would be {}".format(
-                amount, self._orderes[orderid].amount))
+                amount, self._orders[orderid].amount))
             status = -3
 
         if status >= 0:

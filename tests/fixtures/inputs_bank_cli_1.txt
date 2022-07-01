@@ -1,0 +1,11 @@
+S
+O 10
+X 100 1 Zeh
+X 10 1 Zeh
+O 100
+O 80
+O 10
+X 10 3 Zeh
+X 80 2 Maneh
+O 90
+F
