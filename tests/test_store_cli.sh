@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -e
 
 tempresults=test_bank_cli_temp
 tempbank=tempbank
