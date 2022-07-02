@@ -28,7 +28,11 @@ class BankClient:
         channel = grpc.insecure_channel(self._bank_endpoint)
         stub = bank_pb2_grpc.BankStub(channel)
         while True:
-            request_str = input()
+            try:
+                request_str = input()
+            except EOFError as e:
+                break
+
             request = self._parse_request(request_str)
             self._process_request(stub, self._walletid, request)
             if request.type == Request.KILL_SERVER:

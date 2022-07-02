@@ -29,7 +29,11 @@ class StoreClient:
     def run(self):
         instr = ""
         while True:
-            request_str = input()
+            try:
+                request_str = input()
+            except EOFError as e:
+                break
+
             request = self._parse_request(request_str)
             self._process_request(self._walletid, request)
             if request.type == Request.KILL_SERVER:
